@@ -1,0 +1,24 @@
+{
+  "name": "project-arara",
+  "version": "1.0.0",
+  "description": "Hoje, refleti sobre a possibilidade de se comunicar com o ChatGPT usando a fala como linguagem natural. Decidi iniciar uma prova de conceito (POC) para dar voz ao ChatGPT, utilizando recursos de Machine Learning e nuvem.",
+  "main": "example-polly.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/despossivel/PROJECT-arara.git"
+  },
+  "author": "despossivel",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/despossivel/PROJECT-arara/issues"
+  },
+  "homepage": "https://github.com/despossivel/PROJECT-arara#readme",
+  "dependencies": {
+    "@aws-sdk/client-polly": "^3.316.0",
+    "@aws-sdk/client-transcribe": "^3.316.0",
+    "aws-sdk": "^2.1363.0"
+  }
+}

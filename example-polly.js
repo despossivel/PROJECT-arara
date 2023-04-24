@@ -13,8 +13,10 @@ var params = {
 
 const run = async () => {
   try {
-    await pollyClient.send(new StartSpeechSynthesisTaskCommand(params));
-    console.log("Success, audio file added to " + params.OutputS3BucketName);
+  
+    const client = new PollyClient({ region: "us-west" });
+
+
   } catch (err) {
     console.log("Error putting object", err);
   }

@@ -1,33 +1,5 @@
-hoje refleti sobre o seguinte cenário; Vamos pode se comunicar com o ChatGPT através da linguagem natural que é a fala? Pensando nisso decidi iniciar uma POC capaz de da voz ao chatGPT, e como isso vai funcionar?
+Hoje, refleti sobre a possibilidade de se comunicar com o ChatGPT usando a fala como linguagem natural. Decidi iniciar uma prova de conceito (POC) para dar voz ao ChatGPT, utilizando recursos de Machine Learning e nuvem.
 
+Minha ideia é usar dois serviços da AWS: o Transcribe, que converte áudio em texto, e o Polly, que converte texto em áudio. O Transcribe será responsável por receber nossa entrada de microfone e convertê-la em texto, enquanto o Polly irá receber a resposta do ChatGPT e devolver o conteúdo em um arquivo de áudio. Para gerenciar esses fluxos de entrada e saída na comunicação entre o cliente e a nuvem, será necessário uma lambda.
 
-
-Utilizarei alguns recusos de Machinelearning e cloud para ajudar nessa tarefa.
-
-
-
-fiz um rascunho de como seria essa arquitetura e fluxo de dados baseado em dois servicos da AWS, sendo eles; 
-
-
-
-AWS Transcribe capaz de converter arquivos de audio em texto; ele vai ser responsavel por receber nossa entrada de microfone e converter em texto.
-
-
-
-eo 
-
-
-
-AWS Polly capaz de converter texto em audio; ele vai ser responsável por receber a resposta do chatGPT e devolver o contudo em um arquivo de audio.
-
-
-
-
-
-e vamos precisar de uma lambda que vai ficar responsável por gerenciar esses fluxos de entrada/saida na comunicada entre o cliente e nossa nuvem. 
-
-
-
-
-
-este é o escopo de uma ideia embrionaria, algumas coisas podem mudar nas proximas publicacoes, assim como estou aberto a sujestoes e colaboracao de pessoas que acham essa ideia empolgante. 
+Este é um esboço inicial e estou aberto a sugestões e colaborações de pessoas que também acham essa ideia empolgante. É possível que alguns detalhes mudem nas próximas publicações.

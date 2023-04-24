@@ -5,8 +5,8 @@ import { transcribeClient } from "./libs/transcribeClient.js";
 // Set the parameters
 export const params = {
   TranscriptionJobName: "JOB_NAME",
-  LanguageCode: "LANGUAGE_CODE", // For example, 'en-US'
-  MediaFormat: "SOURCE_FILE_FORMAT", // For example, 'wav'
+  LanguageCode: "en-US", // For example, 'en-US'
+  MediaFormat: "wav", // For example, 'wav'
   Media: {
     MediaFileUri: "SOURCE_LOCATION",
     // For example, "https://transcribe-demo.s3-REGION.amazonaws.com/hello_world.wav"
