@@ -10,7 +10,7 @@ curl https://api.openai.com/v1/models \
   -H "Authorization: Bearer $TOKEN" \
   -d '{
      "model": "gpt-3.5-turbo",
-     "messages": [{"role": "user", "content": "Say this is a test!"}],
+     "messages": [{"role": "user", "content": "um dos tres testando"}],
      "temperature": 0.7
    }'
 
