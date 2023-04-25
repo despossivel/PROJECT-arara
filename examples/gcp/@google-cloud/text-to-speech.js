@@ -1,27 +1,48 @@
-// Importe o pacote "request"
 const request = require('request');
+const fs = require('fs');
+const path = require('path');
+const { Readable } = require('stream');
+const { decode } = require('base64-arraybuffer');
+const wav = require('wav');
 
-// Defina as opções de voz e áudio
+const outputFilePath = path.join(__dirname, 'audio.wav');
+// const inputFilePath = path.join(__dirname, 'input.txt'); // Substitua pelo caminho do seu arquivo de entrada
+
 const data = JSON.stringify({
-    input: { text: 'hi!' },
-    voice: { languageCode: 'pt-BR', ssmlGender: 'FEMALE' },
-    audioConfig: { audioEncoding: 'OGG_OPUS' },
+  input: { text: 'Um, dois, tres, testando' },
+  voice: { languageCode: 'pt-BR', ssmlGender: 'FEMALE' },
+  audioConfig: { audioEncoding: 'LINEAR16' },
 });
 
-// Defina as opções da requisição HTTP POST
 const options = {
-    method: 'POST',
-    url: 'https://texttospeech.googleapis.com/v1/text:synthesize',
-    qs: { key: 'AIzaSyCv4pgzGr4JIBEQWqqOUexAk2VFwFdG3J8' },
-    headers: { 'Content-Type': 'application/json' },
-    body: data,
+  method: 'POST',
+  url: 'https://texttospeech.googleapis.com/v1/text:synthesize',
+  qs: { key: 'AIzaSyCv4pgzGr4JIBEQWqqOUexAk2VFwFdG3J8' },
+  headers: { 'Content-Type': 'application/json' },
+  body: data,
 };
 
-// Use o método "request" para enviar a requisição POST
 request(options, (error, response, body) => {
-    if (error) throw new Error(error);
+  if (error) throw new Error(error);
 
-    // Salve o arquivo de áudio no seu sistema de arquivos
-    require('fs').writeFileSync('output-texttospeech.wav', JSON.parse(body).audioContent, 'base64');
-    console.log('Arquivo de áudio salvo!');
+  // Decode o conteúdo Base64 do arquivo de áudio retornado pela API
+  const arrayBuffer = decode(JSON.parse(body).audioContent);
+  const buffer = Buffer.from(arrayBuffer);
+
+  // Converter o buffer em um stream legível
+  const readable = new Readable();
+  readable.push(buffer);
+  readable.push(null);
+
+  // Criar um stream gravável para o arquivo WAV de saída
+  const writer = new wav.FileWriter(outputFilePath, {
+    sampleRate: 16000,
+    channels: 1,
+    bitDepth: 16,
+  });
+
+  // Pipe o stream legível para o stream gravável
+  readable.pipe(writer);
+
+  console.log('Arquivo WAV gerado com sucesso!');
 });

@@ -5,6 +5,7 @@
   "main": "example-polly.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "create:speech:fetch": "node examples/gcp/@google-cloud/text-to-speech-fecth.js ",
     "create:speech": "node examples/gcp/@google-cloud/text-to-speech.js ",
     "create:text": "node examples/gcp/@google-cloud/speech-to-text.js"
   },
@@ -24,7 +25,9 @@
     "@google-cloud/speech": "^5.4.1",
     "@google-cloud/text-to-speech": "^4.2.2",
     "aws-sdk": "^2.1363.0",
+    "base64-arraybuffer": "^1.0.2",
     "google-auth-library": "^8.7.0",
-    "request": "^2.88.2"
+    "request": "^2.88.2",
+    "wav": "^1.0.2"
   }
 }
