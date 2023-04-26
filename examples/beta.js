@@ -54,7 +54,7 @@ request(options, (error, response, body) => {
         url: 'https://api.openai.com/v1/chat/completions',
         method: 'POST',
         headers: {
-            'Authorization': 'Bearer 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',
+            'Authorization': 'Bearer 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',
             'Content-Type': 'application/json'
         },
         json: {

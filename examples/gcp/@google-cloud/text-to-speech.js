@@ -3,7 +3,7 @@ const path = require('path');
 const { Readable } = require('stream');
 const { decode } = require('base64-arraybuffer');
 const wav = require('wav');
-
+const fs = require('fs')
 const outputFilePath = path.join(__dirname, 'audio.wav');
 
 const data = JSON.stringify({
@@ -23,9 +23,13 @@ const options = {
 request(options, (error, response, body) => {
   if (error) throw new Error(error);
 
+
+  console.log(JSON.parse(body).audioContent)
+
+  // console.log(JSON.parse(body).audioContent)
   // Decode o conteúdo Base64 do arquivo de áudio retornado pela API
   const arrayBuffer = decode(JSON.parse(body).audioContent);
-  const buffer = Buffer.from(arrayBuffer);
+  const buffer = Buffer.from(arrayBuffer)
 
   // Converter o buffer em um stream legível
   const readable = new Readable();
