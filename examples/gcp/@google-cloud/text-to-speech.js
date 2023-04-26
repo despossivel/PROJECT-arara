@@ -1,12 +1,10 @@
 const request = require('request');
-const fs = require('fs');
 const path = require('path');
 const { Readable } = require('stream');
 const { decode } = require('base64-arraybuffer');
 const wav = require('wav');
 
 const outputFilePath = path.join(__dirname, 'audio.wav');
-// const inputFilePath = path.join(__dirname, 'input.txt'); // Substitua pelo caminho do seu arquivo de entrada
 
 const data = JSON.stringify({
   input: { text: 'Um, dois, tres, testando' },
@@ -43,6 +41,5 @@ request(options, (error, response, body) => {
 
   // Pipe o stream legível para o stream gravável
   readable.pipe(writer);
-
   console.log('Arquivo WAV gerado com sucesso!');
 });

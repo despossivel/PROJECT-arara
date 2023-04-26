@@ -5,9 +5,10 @@
   "main": "example-polly.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "create:speech:fetch": "node examples/gcp/@google-cloud/text-to-speech-fecth.js ",
-    "create:speech": "node examples/gcp/@google-cloud/text-to-speech.js ",
-    "create:text": "node examples/gcp/@google-cloud/speech-to-text.js"
+    "text:speech:fetch": "node examples/gcp/@google-cloud/text-to-speech-fetch.js",
+    "text:speech": "node examples/gcp/@google-cloud/text-to-speech.js ",
+    "speech:text": "node examples/gcp/@google-cloud/speech-to-text.js",
+    "speech:text:fetch": "node examples/gcp/@google-cloud/speech-to-text-fetch.js"
   },
   "repository": {
     "type": "git",

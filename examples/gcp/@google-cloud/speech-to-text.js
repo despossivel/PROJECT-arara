@@ -31,8 +31,6 @@ const options = {
 // Use o método "request" para enviar a requisição POST
 request(options, (error, response, body) => {
     if (error) throw new Error(error);
-
-
     console.log(JSON.parse(body))
     // Exiba o resultado do reconhecimento de voz
     console.log(JSON.parse(body)?.results[0]?.alternatives);
