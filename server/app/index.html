@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <meta charset="utf-8">
   <title>Streaming de Áudio</title>
 </head>
+
 <body>
 
   <h1>Streaming de Áudio</h1>
@@ -12,10 +14,15 @@
   <br><br>
   <audio controls></audio>
 
-  <audio id="audioReceive" controls></audio>
+  <!-- <audio id="audioReceive" controls></audio> -->
   <br><br>
   <button id="upload" disabled>Enviar gravação</button>
-
+  <br><br>
+  <br><br>
+  <br><br>
+  <span>Receive from server</span>
+  <audio id="audioReceive" controls></audio>
+  <br><br>
   <script src="/socket.io/socket.io.js"></script>
   <script>
     const audio = document.querySelector('audio');
@@ -47,7 +54,8 @@
             const audioUrl = URL.createObjectURL(audioBlob);
             audio.src = audioUrl;
             audio.play();
-            chunks = [];
+            console.log(audioUrl)
+            // chunks = [];
 
 
             const audioBlobReceive = new Blob(chunksReceive);
@@ -78,26 +86,69 @@
       chunksReceive.push(data);
     });
 
+
+
     // Quando o botão de upload é clicado
     const uploadButton = document.getElementById('upload');
-    uploadButton.addEventListener('click', () => {
-      const formData = new FormData();
-      const audioBlob = new Blob(chunks);
-      formData.append('audio', audioBlob, 'recording.wav');
-      fetch('/upload', {
-        method: 'POST',
-        body: formData,
-      })
-        .then(response => {
-          console.log('Gravação enviada com sucesso.');
-          // Limpa a gravação e desabilita o botão de upload
-          chunks = [];
-          uploadButton.disabled = true;
+    uploadButton.addEventListener('click', async () => {
+
+
+      // Captura o elemento de audio
+      const audioElement = document.querySelector('audio');
+
+      // Faz uma requisição GET para o arquivo de áudio
+      fetch(audioElement.src)
+        .then(response => response.blob())
+        .then(async audioBlob => {
+          // Cria um objeto FormData
+          const formData = new FormData();
+
+          // Adiciona o arquivo ao objeto FormData
+          formData.append('audio', audioBlob, 'audio.wav');
+
+          try {
+            // Faz uma requisição POST para o servidor com o objeto FormData
+            const response = await fetch('/upload', {
+              method: 'POST',
+              body: formData
+            });
+
+            // Verifica se a resposta foi bem sucedida
+            if (response.ok) {
+              console.log('Arquivo enviado com sucesso!');
+            } else {
+              console.error('Erro ao enviar o arquivo.');
+            }
+          } catch (error) {
+            console.error(error);
+          }
         })
-        .catch(error => {
-          console.error(error);
-        });
+        .catch(error => console.error(error));
+
+
+
+      // const formData = new FormData();
+      // const audioBlob = new Blob(chunks);
+      // console.log(audioBlob)
+      // formData.append('audio', audioBlob, 'recording.wav');
+      // fetch('/upload', {
+      //   method: 'POST',
+      //   body: formData,
+      // })
+      //   .then(response => {
+      //     console.log('Gravação enviada com sucesso.');
+      //     // Limpa a gravação e desabilita o botão de upload
+      //     chunks = [];
+      //     uploadButton.disabled = true;
+      //   })
+      //   .catch(error => {
+      //     console.error(error);
+      //   });
+
+
+
     });
   </script>
 </body>
+
 </html>

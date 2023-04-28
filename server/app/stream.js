@@ -23,7 +23,7 @@ io.on('connection', (socket) => {
   console.log('a user connected');
 
   // Send audio file to the client in chunks
-  const audioFilePath = __dirname + '/stream.mp3';
+  const audioFilePath = __dirname + '/audios/mic.wav';
   const fileSize = fs.statSync(audioFilePath).size;
   const chunkSize = 1024 * 1024 * 1; // 1MB
   const numChunks = Math.ceil(fileSize / chunkSize);
