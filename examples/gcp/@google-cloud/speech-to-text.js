@@ -2,7 +2,7 @@
 const request = require('request');
 const path = require("path")
 // Converta o arquivo de áudio em base64
-const audioContent = require('fs').readFileSync(path.join(__dirname, 'audio.wav')).toString('base64');
+const audioContent = require('fs').readFileSync(path.join(__dirname, 'mic.wav')).toString('base64');
 // const inputFilePath = path.join(__dirname, 'audio.mp3');
 
 

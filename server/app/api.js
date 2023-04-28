@@ -1,9 +1,10 @@
 import { once } from 'node:events'
 import { createServer } from 'node:http'
 import JWT from 'jsonwebtoken'
-import speechToText, { base64SpeechToText } from "./SpeechToText.js"
+import speechToText, { getSpeechToText } from "./SpeechToText.js"
 import textToSpeech from "./TextToSpeech.js"
 import Gpt from "./Gpt.js"
+import { dirname, extname } from 'path';
 
 
 import multer from 'multer';
@@ -13,7 +14,7 @@ import { Readable } from 'stream'
 import { decode } from 'base64-arraybuffer'
 import wav from 'wav'
 import fs from 'fs'
-
+ 
 
 const uploadDir = './'; // Diretório para salvar os arquivos de upload
 const storage = multer.diskStorage({
@@ -83,29 +84,29 @@ const handler = async (request, response) => {
     // response.end(JSON.stringify({ result: responseData }))
   }
 
-  if (request.url === '/speech:recognize:base64' && request.method === 'POST') {
-    const dataJSON = (await once(request, 'data')).toString()
+  if (request.url === '/speech:recognize' && request.method === 'GET') {
+    // const dataJSON = (await once(request, 'data')).toString()
 
-    console.log(dataJSON)
+    // console.log(dataJSON)
 
-    const responseData = await base64SpeechToText(dataJSON)
+    const responseData = await getSpeechToText()
 
-    // response.end(JSON.stringify({ result: 'responseData' }))
+    response.end(JSON.stringify({ result: responseData }))
   }
 
-  if (request.method === 'POST' && request.url === '/upload') {
-    await upload.single('audio')(request, response, async (err) => {
-      if (err) {
-        console.error(err);
-        response.writeHead(500, { 'Content-Type': 'text/plain' });
-        response.end('Erro ao fazer upload do arquivo de áudio');
-      } else {
-        const responseData = await speechToText(request.file.filename)
+  // if (request.method === 'POST' && request.url === '/upload') {
+  //   await upload.single('audio')(request, response, async (err) => {
+  //     if (err) {
+  //       console.error(err);
+  //       response.writeHead(500, { 'Content-Type': 'text/plain' });
+  //       response.end('Erro ao fazer upload do arquivo de áudio');
+  //     } else {
+  //       const responseData = await speechToText(request.file.filename)
 
-        response.end(JSON.stringify({ result: responseData }))
-      }
-    });
-  }
+  //       response.end(JSON.stringify({ result: responseData }))
+  //     }
+  //   });
+  // }
 
   // if (!isHeadersValid(request.headers)) {
   //   response.writeHead(400)
