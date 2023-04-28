@@ -19,6 +19,47 @@ const __dirname = dirname(__filename);
 // import fs from 'fs';
 import axios from 'axios';
 
+
+
+export async function IOSpeechToText(audioFilePath) {
+  // const audioFilePath = __dirname + '/audios/mic.wav';
+
+
+  
+  const audioContent = fs.readFileSync(audioFilePath).toString('base64');
+
+  // Defina as opções do reconhecimento de voz
+  const data = JSON.stringify({
+    audio: { content: audioContent },
+    config: {
+      encoding: 'LINEAR16',
+      languageCode: 'pt-BR',
+      enableAutomaticPunctuation: true,
+      model: 'default',
+      // sampleRateHertz: 16000
+    },
+  });
+
+  // Defina as opções da requisição HTTP POST
+  const options = {
+    method: 'POST',
+    url: 'https://speech.googleapis.com/v1/speech:recognize',
+    params: { key: 'AIzaSyCv4pgzGr4JIBEQWqqOUexAk2VFwFdG3J8' },
+    headers: { 'Content-Type': 'application/json' },
+    data: data,
+  };
+
+  // Use o método "axios" para enviar a requisição POST
+  try {
+    const response = await axios(options);
+    console.log(response.data.results[0].alternatives);
+  } catch (error) {
+    throw new Error(error);
+  }
+}
+
+
+
 export async function getSpeechToText() {
   const audioFilePath = __dirname + '/audios/mic.wav';
 
