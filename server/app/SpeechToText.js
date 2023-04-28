@@ -3,7 +3,7 @@ import requestRest from 'request'
 import path from 'path'
 import fs from 'fs'
 import { decode } from 'base64-arraybuffer'
-
+import Gpt from "./Gpt.js"
 
 import { Readable } from 'stream'
 
@@ -16,6 +16,9 @@ import { dirname, extname } from 'path';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
+
+import textToSpeech from "./TextToSpeech.js"
+
 // import fs from 'fs';
 import axios from 'axios';
 
@@ -25,7 +28,7 @@ export async function IOSpeechToText(audioFilePath) {
   // const audioFilePath = __dirname + '/audios/mic.wav';
 
 
-  
+
   const audioContent = fs.readFileSync(audioFilePath).toString('base64');
 
   // Defina as opções do reconhecimento de voz
@@ -52,7 +55,17 @@ export async function IOSpeechToText(audioFilePath) {
   // Use o método "axios" para enviar a requisição POST
   try {
     const response = await axios(options);
-    console.log(response.data.results[0].alternatives);
+    console.log(response.data.results[0].alternatives[0].transcript);
+
+
+    const responseGPT = await Gpt({
+      text: response.data.results[0].alternatives[0].transcript
+    })
+
+    console.log(responseGPT)
+
+    textToSpeech(responseGPT);
+
   } catch (error) {
     throw new Error(error);
   }
@@ -64,7 +77,7 @@ export async function getSpeechToText() {
   const audioFilePath = __dirname + '/audios/mic.wav';
 
 
-  
+
   const audioContent = fs.readFileSync(audioFilePath).toString('base64');
 
   // Defina as opções do reconhecimento de voz
@@ -92,6 +105,11 @@ export async function getSpeechToText() {
   try {
     const response = await axios(options);
     console.log(response.data.results[0].alternatives);
+
+
+
+
+
   } catch (error) {
     throw new Error(error);
   }
