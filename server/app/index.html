@@ -94,7 +94,7 @@
       const audioUrlReceive = URL.createObjectURL(audioBlobReceive);
       audioReceive.src = audioUrlReceive;
       audioReceive.play();
-      // chunksReceive = [];
+      chunksReceive = [];
     });
 
 
@@ -127,8 +127,6 @@
             // Verifica se a resposta foi bem sucedida
             if (response.ok) {
               console.log('Arquivo enviado com sucesso!');
-              chunks = [];
-              
             } else {
               console.error('Erro ao enviar o arquivo.');
             }
@@ -137,27 +135,6 @@
           }
         })
         .catch(error => console.error(error));
-
-
-
-      // const formData = new FormData();
-      // const audioBlob = new Blob(chunks);
-      // console.log(audioBlob)
-      // formData.append('audio', audioBlob, 'recording.wav');
-      // fetch('/upload', {
-      //   method: 'POST',
-      //   body: formData,
-      // })
-      //   .then(response => {
-      //     console.log('Gravação enviada com sucesso.');
-      //     // Limpa a gravação e desabilita o botão de upload
-      //     chunks = [];
-      //     uploadButton.disabled = true;
-      //   })
-      //   .catch(error => {
-      //     console.error(error);
-      //   });
-
 
 
     });
