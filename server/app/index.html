@@ -58,11 +58,11 @@
             // chunks = [];
 
 
-            const audioBlobReceive = new Blob(chunksReceive);
-            const audioUrlReceive = URL.createObjectURL(audioBlobReceive);
-            audioReceive.src = audioUrlReceive;
-            audioReceive.play();
-            chunksReceive = [];
+            // const audioBlobReceive = new Blob(chunksReceive);
+            // const audioUrlReceive = URL.createObjectURL(audioBlobReceive);
+            // audioReceive.src = audioUrlReceive;
+            // // audioReceive.play();
+            // chunksReceive = [];
 
             // Habilita o botão de upload
             uploadButton.disabled = false;
@@ -83,7 +83,18 @@
 
     // Quando o servidor envia o áudio
     socket.on('audio', (data) => {
+      console.log('Quando o servidor envia o áudio')
+      console.log(data)
       chunksReceive.push(data);
+
+
+
+
+      const audioBlobReceive = new Blob(chunksReceive);
+      const audioUrlReceive = URL.createObjectURL(audioBlobReceive);
+      audioReceive.src = audioUrlReceive;
+      audioReceive.play();
+      // chunksReceive = [];
     });
 
 
@@ -116,6 +127,8 @@
             // Verifica se a resposta foi bem sucedida
             if (response.ok) {
               console.log('Arquivo enviado com sucesso!');
+              chunks = [];
+              
             } else {
               console.error('Erro ao enviar o arquivo.');
             }

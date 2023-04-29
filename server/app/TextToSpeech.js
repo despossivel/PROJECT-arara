@@ -6,19 +6,21 @@ import { Readable } from 'stream'
 import { decode } from 'base64-arraybuffer'
 import wav from 'wav'
 import fs from 'fs'
+import { dirname, extname } from 'path';
+import { fileURLToPath } from 'url';
+
+
+const __filename = fileURLToPath(import.meta.url);
+
+const __dirname = dirname(__filename);
 
 
 
 export default async function textToSpeech(text) {
 
-    const outputFilePath = path.join('', 'audio.wav');
+    const outputFilePath = path.join(__dirname, '/audios/stream.wav');
 
     // question frrom GPC: dataJSON.text
-
-
-    
-
-
     // anwser gpt synthesize
 
     const data = JSON.stringify({
@@ -35,7 +37,7 @@ export default async function textToSpeech(text) {
         body: data,
     };
 
-    requestRest(options, (error, response, body) => {
+    await requestRest(options, async (error, response, body) => {
         if (error) throw new Error(error);
 
 

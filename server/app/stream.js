@@ -12,6 +12,12 @@ import {
   IOSpeechToText
 } from "./SpeechToText.js"
 
+import EventEmitter from 'events';
+
+const meuEmitter = new EventEmitter();
+
+
+
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -30,7 +36,7 @@ io.on('connection', (socket) => {
   console.log('a user connected');
 
   // Send audio file to the client in chunks
-  const audioFilePath = __dirname + '/audios/mic.wav';
+  const audioFilePath = __dirname + '/audios/stream.wav';
   const fileSize = fs.statSync(audioFilePath).size;
   const chunkSize = 1024 * 1024 * 1; // 1MB
   const numChunks = Math.ceil(fileSize / chunkSize);
@@ -40,14 +46,31 @@ io.on('connection', (socket) => {
 
   const stream = fs.createReadStream(audioFilePath, { highWaterMark: chunkSize });
 
-  stream.on('data', (chunk) => {
-    socket.emit('audio', chunk);
-    currentChunk++;
+  // stream.on('data', (chunk) => {
+  //   socket.emit('audio', chunk);
+  //   currentChunk++;
+  //   if (currentChunk === numChunks) {
+  //     socket.emit('end');
+  //   }
+  // });
 
-    if (currentChunk === numChunks) {
-      socket.emit('end');
-    }
+
+
+
+  meuEmitter.on('send:audio', () => {
+    console.log('O evento "send:audio" foi acionado.');
+    stream.on('data', (chunk) => {
+      socket.emit('audio', chunk);
+      currentChunk++;
+      if (currentChunk === numChunks) {
+        socket.emit('end');
+      }
+    });
   });
+
+
+
+
 
   socket.on('disconnect', () => {
     console.log('user disconnected');
@@ -70,11 +93,13 @@ app.post('/upload', upload.single('audio'), (req, res) => {
       console.error(err);
       res.status(500).send('Erro ao converter arquivo para formato WAV.');
     })
-    .on('end', () => {
+    .on('end', async () => {
       console.log('Arquivo convertido com sucesso para formato WAV.');
       res.send('Arquivo recebido e convertido com sucesso!');
 
-      IOSpeechToText(newFilePath)
+      await IOSpeechToText(newFilePath)
+      meuEmitter.emit('send:audio');
+
 
     })
     .save(newFilePath);
