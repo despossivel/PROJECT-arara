@@ -45,3 +45,20 @@ Já temos um servidor WebSocket para fazer o streaming de áudio entre o cliente
 No entanto, tivemos alguns problemas ao longo do caminho que gostaríamos de destacar aqui. Um dos principais problemas que encontramos foi com arquivos de áudio WAV que estavam chegando corrompidos no servidor. Inicialmente, estávamos recebendo o Base64 do áudio em um JSON, mas o arquivo de áudio criado do lado do servidor era inválido. Como resultado, iniciamos algumas discussões sobre as melhores práticas para transportar o áudio para o servidor sem perdas. Eventualmente, construímos um servidor que recebe o arquivo de áudio por um FormData e retorna a voz do GPT sintetizada por um stream de áudio.
 
 Esta é uma iniciativa de esforço inicial, e estamos abertos a sugestões e colaborações de pessoas que também acreditam nessa ideia empolgante. É possível que alguns detalhes mudem nas próximas atualizações, mas estamos animados com o progresso que fizemos até agora e esperamos continuar a avançar neste projeto promissor.
+
+
+----------------
+
+Atualização do projeto POC para criação de um canal de comunicação por voz com o ChatGPT e sintetização de suas respostas em voz:
+
+Apresentamos a nossa POC para a criação de um canal de comunicação por voz com o ChatGPT. A seguir, compartilhamos algumas anotações sobre o projeto, suas dificuldades e próximos passos.
+
+Nosso objetivo era criar uma POC para um canal de comunicação por voz com o ChatGPT. Disponibilizamos o nosso repositório do laboratório, que contém anotações diversas, tentativas que não deram certo, exemplos e outros repositórios e projetos utilizados como referência.
+
+O resultado obtido foi satisfatório para a nossa equipe, apesar de o áudio recebido do Text-To-Speech apresentar atraso na fala, por decisão intencional do nosso time, para testes. 
+
+A maior dificuldade que enfrentamos durante as quatro madrugadas de trabalho foi transferir o buffer do microfone para o servidor. Depois de muitas tentativas e discussões sobre boas práticas, conseguimos chegar a um resultado satisfatório.
+
+Com esse projeto, atingimos nosso objetivo e agora estamos planejando os próximos passos para construir um MVP com foco em assistência pessoal. 
+
+Essa é uma iniciativa de esforço inicial, e estamos abertos a sugestões e colaborações de pessoas que também acreditam nessa ideia empolgante. É possível que alguns detalhes mudem nas próximas atualizações, mas estamos animados com o progresso que fizemos até agora e esperamos continuar avançando nesse projeto promissor.

@@ -14,10 +14,10 @@ const data = JSON.stringify({
 
 const options = {
   method: 'POST',
-  qs: { key: 'AIzaSyCv4pgzGr4JIBEQWqqOUexAk2VFwFdG3J8' },
+  qs: { key: 'TOKEN' },
   headers: { 
     'Content-Type': 'application/json',
-    'Authorization': `Bearer AIzaSyCv4pgzGr4JIBEQWqqOUexAk2VFwFdG3J8` // Substitua pelo seu token de acesso à API
+    'Authorization': `Bearer TOKEN` // Substitua pelo seu token de acesso à API
   },
   body: data,
 };

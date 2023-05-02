@@ -17,7 +17,7 @@ const data = JSON.stringify({
 // Definir as opções da requisição HTTP POST
 const options = {
     method: 'POST',
-    qs: { key: 'AIzaSyCv4pgzGr4JIBEQWqqOUexAk2VFwFdG3J8' },
+    qs: { key: 'TOKEN' },
     headers: {
         'Content-Type': 'application/json',
     },

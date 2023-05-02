@@ -4,7 +4,7 @@ export default async function Gpt(dataJSON) {
     const options = {
         method: 'POST',
         headers: {
-            'Authorization': 'Bearer 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',
+            'Authorization': 'Bearer TOKEN',
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({

@@ -23,7 +23,7 @@ const data = JSON.stringify({
 const options = {
     method: 'POST',
     url: 'https://speech.googleapis.com/v1/speech:recognize',
-    qs: { key: 'AIzaSyCv4pgzGr4JIBEQWqqOUexAk2VFwFdG3J8' },
+    qs: { key: 'TOKEN' },
     headers: { 'Content-Type': 'application/json' },
     body: data,
 };

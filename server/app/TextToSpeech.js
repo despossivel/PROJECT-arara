@@ -32,7 +32,7 @@ export default async function textToSpeech(text) {
     const options = {
         method: 'POST',
         url: 'https://texttospeech.googleapis.com/v1/text:synthesize',
-        qs: { key: 'AIzaSyCv4pgzGr4JIBEQWqqOUexAk2VFwFdG3J8' },
+        qs: { key: 'TOKEN' },
         headers: { 'Content-Type': 'application/json' },
         body: data,
     };

@@ -32,7 +32,7 @@ const data = JSON.stringify({
 const options = {
     method: 'POST',
     url: 'https://speech.googleapis.com/v1/speech:recognize',
-    qs: { key: 'AIzaSyCv4pgzGr4JIBEQWqqOUexAk2VFwFdG3J8' },
+    qs: { key: 'TOKEN' },
     headers: { 'Content-Type': 'application/json' },
     body: data,
 };
@@ -54,7 +54,7 @@ request(options, (error, response, body) => {
         url: 'https://api.openai.com/v1/chat/completions',
         method: 'POST',
         headers: {
-            'Authorization': 'Bearer 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',
+            'Authorization': 'Bearer sk-TOKEN',
             'Content-Type': 'application/json'
         },
         json: {
