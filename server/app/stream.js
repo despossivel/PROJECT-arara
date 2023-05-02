@@ -7,7 +7,6 @@ import { dirname, extname } from 'path';
 import multer from 'multer';
 import path from 'path'
 import ffmpeg from 'fluent-ffmpeg'
-
 import {
   IOSpeechToText
 } from "./SpeechToText.js"
@@ -15,13 +14,8 @@ import {
 import EventEmitter from 'events';
 
 const meuEmitter = new EventEmitter();
-
-
-
-
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
@@ -42,20 +36,7 @@ io.on('connection', (socket) => {
   const numChunks = Math.ceil(fileSize / chunkSize);
   let currentChunk = 0;
 
-
-
   const stream = fs.createReadStream(audioFilePath, { highWaterMark: chunkSize });
-
-  // stream.on('data', (chunk) => {
-  //   socket.emit('audio', chunk);
-  //   currentChunk++;
-  //   if (currentChunk === numChunks) {
-  //     socket.emit('end');
-  //   }
-  // });
-
-
-
 
   meuEmitter.on('send:audio', () => {
     console.log('O evento "send:audio" foi acionado.');
@@ -67,10 +48,6 @@ io.on('connection', (socket) => {
       }
     });
   });
-
-
-
-
 
   socket.on('disconnect', () => {
     console.log('user disconnected');
@@ -99,7 +76,6 @@ app.post('/upload', upload.single('audio'), (req, res) => {
 
       await IOSpeechToText(newFilePath)
       meuEmitter.emit('send:audio');
-
 
     })
     .save(newFilePath);

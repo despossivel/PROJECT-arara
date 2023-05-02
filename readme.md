@@ -33,3 +33,15 @@ O speech-to-text.js, por sua vez, tem a responsabilidade contrária. Ele pega um
 A próxima etapa é construir o backend para gerenciar o fluxo de entrada e saída e procurar um memo voice para integrar com o ChatGPT.
 
 Este é apenas um esboço inicial, e estou aberto a sugestões e colaborações de pessoas que também acreditam nessa ideia empolgante. É possível que alguns detalhes mudem nas próximas atualizações.
+
+
+---------------
+
+
+Atualização do projeto POC para criar um canal de comunicação por voz com o ChatGPT e sintetizar suas respostas em voz:
+
+Já temos um servidor WebSocket para fazer o streaming de áudio entre o cliente e o servidor. Nosso objetivo é converter a entrada de áudio do microfone em texto, enviar o comando para o ChatGPT, receber sua resposta e sintetizá-la em voz.
+
+No entanto, tivemos alguns problemas ao longo do caminho que gostaríamos de destacar aqui. Um dos principais problemas que encontramos foi com arquivos de áudio WAV que estavam chegando corrompidos no servidor. Inicialmente, estávamos recebendo o Base64 do áudio em um JSON, mas o arquivo de áudio criado do lado do servidor era inválido. Como resultado, iniciamos algumas discussões sobre as melhores práticas para transportar o áudio para o servidor sem perdas. Eventualmente, construímos um servidor que recebe o arquivo de áudio por um FormData e retorna a voz do GPT sintetizada por um stream de áudio.
+
+Esta é uma iniciativa de esforço inicial, e estamos abertos a sugestões e colaborações de pessoas que também acreditam nessa ideia empolgante. É possível que alguns detalhes mudem nas próximas atualizações, mas estamos animados com o progresso que fizemos até agora e esperamos continuar a avançar neste projeto promissor.
