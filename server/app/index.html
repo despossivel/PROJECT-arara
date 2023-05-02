@@ -4,141 +4,144 @@
 <head>
   <meta charset="utf-8">
   <title>Streaming de Áudio</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .container {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+  </style>
 </head>
 
 <body>
 
-  <h1>Streaming de Áudio</h1>
-  <button id="start">Começar Gravação</button>
-  <button id="stop" disabled>Parar Gravação</button>
-  <br><br>
-  <audio controls></audio>
+  <div class="container">
+    <h1>Streaming de Áudio</h1>
+    <button id="start">Começar Gravação</button>
+    <button id="stop" disabled>Parar Gravação</button>
+    <br><br>
+    <audio controls></audio>
 
-  <!-- <audio id="audioReceive" controls></audio> -->
-  <br><br>
-  <button id="upload" disabled>Enviar gravação</button>
-  <br><br>
-  <br><br>
-  <br><br>
-  <span>Receive from server</span>
-  <audio id="audioReceive" controls></audio>
-  <br><br>
+    <!-- <audio id="audioReceive" controls></audio> -->
+    <br><br>
+    <button id="upload" disabled>Enviar gravação</button>
+    <br><br>
+    <br><br>
+    <br><br>
+    <span>Receive from server</span>
+    <audio id="audioReceive" controls></audio>
+  </div>
+
   <script src="/socket.io/socket.io.js"></script>
-  <script>
-    const audio = document.querySelector('audio');
-    const audioReceive = document.querySelector('#audioReceive');
-    const socket = io();
-    let mediaRecorder = null;
-    let chunks = [];
-    let chunksReceive = [];
 
-    // Quando o botão de gravação é clicado
-    const startButton = document.getElementById('start');
-    startButton.addEventListener('click', () => {
-      navigator.mediaDevices.getUserMedia({ audio: true })
-        .then(stream => {
-          mediaRecorder = new MediaRecorder(stream);
-          mediaRecorder.start();
-          startButton.disabled = true;
-          stopButton.disabled = false;
+</body>
 
-          // Quando um novo fragmento de áudio é gravado
-          mediaRecorder.addEventListener('dataavailable', event => {
-            chunks.push(event.data);
-            socket.emit('audio', event.data);
-          });
+</html>
 
-          // Quando a gravação é interrompida
-          mediaRecorder.addEventListener('stop', () => {
-            const audioBlob = new Blob(chunks);
-            const audioUrl = URL.createObjectURL(audioBlob);
-            audio.src = audioUrl;
-            audio.play();
-            console.log(audioUrl)
-            // chunks = [];
+<script>
 
+  const audio = document.querySelector('audio');
+  const audioReceive = document.querySelector('#audioReceive');
+  const socket = io();
+  let mediaRecorder = null;
+  let chunks = [];
+  let chunksReceive = [];
 
-            // const audioBlobReceive = new Blob(chunksReceive);
-            // const audioUrlReceive = URL.createObjectURL(audioBlobReceive);
-            // audioReceive.src = audioUrlReceive;
-            // // audioReceive.play();
-            // chunksReceive = [];
+  // Quando o botão de gravação é clicado
+  const startButton = document.getElementById('start');
+  startButton.addEventListener('click', () => {
+    navigator.mediaDevices.getUserMedia({ audio: true })
+      .then(stream => {
+        mediaRecorder = new MediaRecorder(stream);
+        mediaRecorder.start();
+        startButton.disabled = true;
+        stopButton.disabled = false;
 
-            // Habilita o botão de upload
-            uploadButton.disabled = false;
-          });
-        })
-        .catch(error => {
-          console.error(error);
+        // Quando um novo fragmento de áudio é gravado
+        mediaRecorder.addEventListener('dataavailable', event => {
+          chunks.push(event.data);
+          socket.emit('audio', event.data);
         });
-    });
 
-    // Quando o botão de parada é clicado
-    const stopButton = document.getElementById('stop');
-    stopButton.addEventListener('click', () => {
-      mediaRecorder.stop();
-      startButton.disabled = false;
-      stopButton.disabled = true;
-    });
+        // Quando a gravação é interrompida
+        mediaRecorder.addEventListener('stop', () => {
+          const audioBlob = new Blob(chunks);
+          const audioUrl = URL.createObjectURL(audioBlob);
+          audio.src = audioUrl;
+          audio.play();
+          console.log(audioUrl)
 
-    // Quando o servidor envia o áudio
-    socket.on('audio', (data) => {
-      console.log('Quando o servidor envia o áudio')
-      console.log(data)
-      chunksReceive.push(data);
+          // Habilita o botão de upload
+          uploadButton.disabled = false;
+        });
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  });
 
+  // Quando o botão de parada é clicado
+  const stopButton = document.getElementById('stop');
+  stopButton.addEventListener('click', () => {
+    mediaRecorder.stop();
+    startButton.disabled = false;
+    stopButton.disabled = true;
+  });
 
+  // Quando o servidor envia o áudio
+  socket.on('audio', (data) => {
+    chunksReceive.push(data);
 
+    const audioBlobReceive = new Blob(chunksReceive);
+    const audioUrlReceive = URL.createObjectURL(audioBlobReceive);
+    audioReceive.src = audioUrlReceive;
+    audioReceive.play();
+    chunksReceive = [];
+  });
 
-      const audioBlobReceive = new Blob(chunksReceive);
-      const audioUrlReceive = URL.createObjectURL(audioBlobReceive);
-      audioReceive.src = audioUrlReceive;
-      audioReceive.play();
-      chunksReceive = [];
-    });
+  // Quando o botão de upload é clicado
+  const uploadButton = document.getElementById('upload');
+  uploadButton.addEventListener('click', async () => {
+    // Captura o elemento de audio
+    const audioElement = document.querySelector('audio');
 
+    // Faz uma requisição GET para o arquivo de áudio
+    fetch(audioElement.src)
+      .then(response => response.blob())
+      .then(async audioBlob => {
+        // Cria um objeto FormData
+        const formData = new FormData();
 
+        // Adiciona o arquivo ao objeto FormData
+        formData.append('audio', audioBlob, 'audio.wav');
 
-    // Quando o botão de upload é clicado
-    const uploadButton = document.getElementById('upload');
-    uploadButton.addEventListener('click', async () => {
+        try {
+          // Faz uma requisição POST para o servidor com o objeto FormData
+          const response = await fetch('/upload', {
+            method: 'POST',
+            body: formData
+          });
 
-
-      // Captura o elemento de audio
-      const audioElement = document.querySelector('audio');
-
-      // Faz uma requisição GET para o arquivo de áudio
-      fetch(audioElement.src)
-        .then(response => response.blob())
-        .then(async audioBlob => {
-          // Cria um objeto FormData
-          const formData = new FormData();
-
-          // Adiciona o arquivo ao objeto FormData
-          formData.append('audio', audioBlob, 'audio.wav');
-
-          try {
-            // Faz uma requisição POST para o servidor com o objeto FormData
-            const response = await fetch('/upload', {
-              method: 'POST',
-              body: formData
-            });
-
-            // Verifica se a resposta foi bem sucedida
-            if (response.ok) {
-              console.log('Arquivo enviado com sucesso!');
-            } else {
-              console.error('Erro ao enviar o arquivo.');
-            }
-          } catch (error) {
-            console.error(error);
+          // Verifica se a resposta foi bem sucedida
+          if (response.ok) {
+            console.log('Arquivo enviado com sucesso!');
+          } else {
+            console.error('Erro ao enviar o arquivo.');
           }
-        })
-        .catch(error => console.error(error));
+        } catch (error) {
+          console.error(error);
+        }
+      })
+      .catch(error => console.error(error));
+  });
 
 
-    });
-  </script>
+
+
+</script>
 </body>
 
 </html>
