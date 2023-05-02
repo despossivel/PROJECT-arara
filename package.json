@@ -4,14 +4,14 @@
   "description": "Hoje, refleti sobre a possibilidade de se comunicar com o ChatGPT usando a fala como linguagem natural. Decidi iniciar uma prova de conceito (POC) para dar voz ao ChatGPT, utilizando recursos de Machine Learning e nuvem.",
   "main": "example-polly.js",
   "scripts": {
+    "start:stream": "node server/app/stream.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "text:speech:fetch": "node examples/gcp/@google-cloud/text-to-speech-fetch.js",
     "text:speech": "node examples/gcp/@google-cloud/text-to-speech.js ",
     "speech:text": "node examples/gcp/@google-cloud/speech-to-text.js",
     "speech:text:fetch": "node examples/gcp/@google-cloud/speech-to-text-fetch.js",
     "start:server": "cd ./server/app && node ./stream.js",
-    "start:client": "cd ./client/app && yarn start",
-    "start:stream": "yarn start:server; yarn start:client"
+    "start:client": "cd ./client/app && yarn start"
   },
   "repository": {
     "type": "git",
