@@ -96,7 +96,7 @@ export async function getSpeechToText() {
   const options = {
     method: 'POST',
     url: 'https://speech.googleapis.com/v1/speech:recognize',
-    params: { key: 'AIzaSyCv4pgzGr4JIBEQWqqOUexAk2VFwFdG3J8' },
+    params: { key: 'TOKEN'
     headers: { 'Content-Type': 'application/json' },
     data: data,
   };
